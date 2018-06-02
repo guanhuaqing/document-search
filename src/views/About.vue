@@ -23,6 +23,7 @@ import MyFilter from '@/components/filter.vue';
 import Calendar from '@/components/calendar.vue';
 import QuestionHint from '@/components/question-hint.vue';
 import Card from '@/components/card.vue';
+// import {SearchURL} from '../lib/const';
 
 @Component({
   components: {
@@ -33,7 +34,13 @@ import Card from '@/components/card.vue';
   },
 })
 export default class About extends Vue {
-  
+  mounted(){
+    console.log(this.$route.params.searchValue);
+    this.$http.get(this.searchURL(0,5)).then(res => console.log(res));
+  }
+  searchURL(position:any,length:any) {
+    return `http://47.100.238.22:8080/search?startPosition=${position}&length=${length}`;
+  }
 }
 </script>
 <style scoped lang="scss">
@@ -59,6 +66,7 @@ export default class About extends Vue {
   }
   .time-filter>div{
     font-size: 13px;
+    cursor: pointer;
   }
 
 </style>

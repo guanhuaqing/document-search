@@ -5,32 +5,32 @@
 			<label for="folder1">{{myDate.getFullYear()}}</label> 
 			<input type="checkbox"  id="folder1" checked="checked" /> 
 			<ol>
-				<li v-for="(month,index) in months" v-bind:key="month">
+				<li v-for="(month,index) in months"  v-bind:key="month">
           <label :for="month">{{month}}</label>
           <input type="checkbox" :id="month" />
 					<ol>
-						<li class="file">
+						<li class="file" v-if="month<currentMonth || today > 20">
 							<label :for="month+index+1">late {{month}}</label> 
               <input type="checkbox" :id="month+index+1" /> 
 							<ol>
-                  <li class="file" v-for="day3 in computeLateDays(months.length -1 - index)" v-bind:key="day3">
+                  <li class="file" v-for="day3 in computeLateDays(months.length -1 - index)" v-if="month<currentMonth || day3 <= today" v-bind:key="day3">
                     <span>{{month}} {{day3}}</span>
                   </li>
               </ol>
 						</li>
 
-						<li class="file">
+						<li class="file" v-if="month<currentMonth || today > 10">
               <label :for="month+index+2">middle {{month}}</label> 
               <input type="checkbox" :id="month+index+2" /> 
 							<ol>
-                  <li class="file" v-for="day2 in myDays" v-bind:key="day2"><span>{{month}} {{10+day2}}</span></li>
+                  <li class="file" v-for="day2 in myDays" v-if="month<currentMonth || (day2+10) <= today" v-bind:key="day2"><span>{{month}} {{10+day2}}</span></li>
 							</ol>
             </li>
 						<li class="file">
               <label :for="month+index+3">early {{month}}</label> 
               <input type="checkbox" :id="month+index+3" /> 
 							<ol>
-                  <li class="file" v-for="day1 in myDays" v-bind:key="day1"><span>{{month}} {{day1}}</span></li>
+                  <li class="file" v-for="day1 in myDays" v-if="month<currentMonth || day1 <= today" v-bind:key="day1"><span>{{month}} {{day1}}</span></li>
 							</ol>
             </li>
 					</ol>
@@ -54,6 +54,8 @@ import {MonthEN} from "../lib/const";
 })
 export default class Calendar extends Vue {
   public myDate = new Date();
+  public today = this.myDate.getDate();
+  public currentMonth = MonthEN[this.myDate.getMonth()];
   mounted(){
     console.log(this.myDate.getFullYear());
   }
@@ -69,7 +71,7 @@ export default class Calendar extends Vue {
   }
   
   get myDays(){
-    return [1,2,3,4,5,6,7,8,9,10]
+    return [10,9,8,7,6,5,4,3,2,1]
   }
   computeLateDays(value: any){
     let days = [],res = [];

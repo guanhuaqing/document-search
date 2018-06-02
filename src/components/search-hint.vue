@@ -29,6 +29,7 @@ export  default class SearchHint extends Vue{
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    z-index: 1;
   }
   .triangle{
     position: relative;

@@ -2,7 +2,7 @@
   <div class="search">
     <div><i class="fa fa-search" aria-hidden="true"></i></div>
     <div>
-      <input placeholder="input search words!" v-model="searchText" @focus="onFocus" @blur="onBlur">
+      <input placeholder="input search words!" v-model="searchText" @focus="onFocus" @blur="onBlur" @keyup.enter="searchDoc">
       <span id="searchClose" class="search-close" @click="clearInput" v-if="searchClear"><i class="fa fa-times" aria-hidden="true"></i></span>
     </div>
     <div @click="searchDoc">Search</div>
@@ -27,7 +27,7 @@ export default class Search extends Vue {
     this.searchClear = false;
   }
   searchDoc(){
-    this.$emit('search-doc');
+    this.$emit('search-doc',this.searchText);
   }
   clearInput(){
     this.searchText = "";

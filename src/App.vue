@@ -32,13 +32,12 @@ export default class Home extends Vue {
   public sidebarFlag:boolean=false;
   public inputFlag:boolean=false;
   mouted(){
-    closeService.closeSubject.subscribe((flag:any) => {
-      console.log("hahaha");
-      this.sidebarFlag = flag});
+
   }
-  searchDoc(){
-    console.log("search-doc");
-    this.$router.push({path:'/about'});
+  searchDoc(value:any){
+    console.log(value);
+    // this.$router.push({path:'/about',params:{searchValue: value}});
+    this.$router.push({name:'about',params:{searchValue: value}});
   }
   pageChange(page:any){
     this.sidebarFlag = false;
