@@ -1,14 +1,14 @@
 <template>
   <div class="card">
     <div class="card-title">
-        <div> txt</div>
-        <div>03-test.txt</div>
-        <div><i class="fa fa-calendar" aria-hidden="true"></i><span>2016年8月30日</span></div>
+        <div>{{searchItem.type}}</div>
+        <div>{{searchItem.title}}</div>
+        <div><i class="fa fa-calendar" aria-hidden="true"></i><span>{{setCreatedTime(searchItem.createdTime)}}</span></div>
         <div><i class="fa fa-file-text" aria-hidden="true"></i><span>23KB</span></div>
-        <div><i class="fa fa-user-o" aria-hidden="true"></i><span>unknown</span></div>
+        <div><i class="fa fa-user-o" aria-hidden="true"></i><span>{{searchItem.author}}</span></div>
     </div>
     <div class="card-description">
-      这个文件巨牛鼻
+      {{searchItem.text}}
     </div>
     <div class="card-path">
       <div>文件路径</div>
@@ -18,22 +18,32 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import * as moment from 'moment';
 
 
 @Component({
   components: {
     
-  },
+  }
 })
 export default class Card extends Vue {
-  
+  @Prop() public searchItem:any;
+  private _createdTime:any = '';
+  mounted(){
+    // console.log(this.searchItem);
+  }
+
+  setCreatedTime(time:any){
+    return moment(time).format('YYYY年MM月DD日');
+  }
 }
 </script>
 <style scoped lang="scss">
 @import '../lib/common.scss';
   .card{
     width: 600px;
+    min-height: 100px;
     margin-top: 10px;
     padding: 5px 10px;
     background-color: white;

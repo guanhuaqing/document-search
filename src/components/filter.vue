@@ -84,6 +84,8 @@ export default class MyFilter extends Vue {
 <style scoped lang="scss">
   .filter{
     width:230px;
+    margin-left: 100px;
+    margin-top: 60px;
     text-align:left;
     padding-left: 10px;
     color:rgb(126, 126, 126);

@@ -31,10 +31,8 @@ export  default class QuestionHint extends Vue{
 </script>
 <style scoped lang="scss">
   .hint{
-    width:600px;
-    
+    width:620px;
     display: flex;
-    
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;

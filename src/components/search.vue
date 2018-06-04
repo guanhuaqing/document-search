@@ -3,7 +3,9 @@
     <div><i class="fa fa-search" aria-hidden="true"></i></div>
     <div>
       <input placeholder="input search words!" v-model="searchText" @focus="onFocus" @blur="onBlur" @keyup.enter="searchDoc">
-      <span id="searchClose" class="search-close" @click="clearInput" v-if="searchClear"><i class="fa fa-times" aria-hidden="true"></i></span>
+      <div id="searchClose" class="search-close" @click="clearInput" >
+        <i class="fa fa-times" aria-hidden="true" v-if="this.searchText.length!=0"></i>
+      </div>
     </div>
     <div @click="searchDoc">Search</div>
   </div>
@@ -12,26 +14,28 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import {watch} from 'fs';
-import * as Rx from "rxjs";
+import BUS from '../service/EventBus.vue';
 
 @Component
 export default class Search extends Vue {
-  public searchClear:boolean = false;
   public searchText :any="";
   onFocus(){
     this.$emit('onFocus');
-    this.searchClear = true;
   }
   onBlur(){
     this.$emit('onBlur');
-    this.searchClear = false;
   }
   searchDoc(){
+    console.log("hahaha");
     this.$emit('search-doc',this.searchText);
+    BUS.$emit('search-about',this.searchText);
   }
-  clearInput(){
+  clearInput(event:any){
+    console.log('clear');
+    this.$emit('onBlur');
     this.searchText = "";
   }
+
 
 }
 </script>
@@ -58,12 +62,14 @@ export default class Search extends Vue {
 }
 .search >div:nth-child(2){
   flex:1;
+  display: flex;
+  align-items: center;
   position: relative;
   text-align: center;
   input{
     border: none;
     height: 100%;
-    width: 100%;
+    width: 370px;
     outline: none;
     text-indent: 0.2em;
   }
@@ -77,11 +83,14 @@ export default class Search extends Vue {
   cursor: pointer;
 }
 .search-close{
-  width: 8px;
-  height: 8px;
+  display: inline-block;
+  width: 20px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
   position: absolute;
-  right: 10px;
-  top:8px;
+  right: 0px;
+  cursor: pointer;
   font-size: 10px;
 }
 </style>

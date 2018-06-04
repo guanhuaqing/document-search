@@ -10,12 +10,15 @@
   },
   "dependencies": {
     "@fortawesome/vue-fontawesome": "^0.0.22",
-    "rxjs": "^6.2.0",
+    "moment": "^2.22.2",
+    "rxjs": "6.0.0",
+    "swiper": "^4.3.2",
     "vue": "^2.5.16",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^6.0.0",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
+    "vue-rx": "^6.0.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

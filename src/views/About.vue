@@ -1,11 +1,11 @@
 <template>
-  <div class="about">
+  <div class="about" >
     <MyFilter />
-    <div class="about-content">
+    <div class="about-content" id="about-content">
        <QuestionHint />
-       <card />
-       <card />
-       <card />
+       <div class="content-wrap" id="content-wrap">
+          <card  v-for="(card) in cards" :key="card.id" :searchItem="card"/>
+       </div>
     </div>
     <div class="time-filter">
       <div><i class="fa fa-sun-o" aria-hidden="true"></i> the past day</div>
@@ -23,7 +23,7 @@ import MyFilter from '@/components/filter.vue';
 import Calendar from '@/components/calendar.vue';
 import QuestionHint from '@/components/question-hint.vue';
 import Card from '@/components/card.vue';
-// import {SearchURL} from '../lib/const';
+import BUS from '../service/EventBus.vue';
 
 @Component({
   components: {
@@ -34,12 +34,45 @@ import Card from '@/components/card.vue';
   },
 })
 export default class About extends Vue {
-  mounted(){
-    console.log(this.$route.params.searchValue);
-    this.$http.get(this.searchURL(0,5)).then(res => console.log(res));
+  public cards = [];
+  public searchText = "";
+  public currentPage = 0;
+  beforeCreate(){
+  //  console.log("before create");
   }
-  searchURL(position:any,length:any) {
-    return `http://47.100.238.22:8080/search?startPosition=${position}&length=${length}`;
+  created(){
+    console.log("create");
+     this.searchText = this.$route.params.searchValue;
+     this.$http.get(this.searchURL(this.searchText,0,10))
+                .then((res:any) => this.cards = res.body)
+  }
+  
+  mounted(){
+   BUS.$on('search-about',(text:any) => {
+     console.log(text);
+     this.searchText = text;
+     this.$http.get(this.searchURL(this.searchText,0,10)).then((res:any) => this.cards = res.body);
+   });
+   let self = this;
+   document.getElementById("content-wrap").addEventListener('scroll', function(){
+     console.log("scroll");
+     if(this.scrollTop + this.offsetHeight >= this.scrollHeight){
+         self.currentPage ++;
+         self.$http.get(self.searchURL(self.searchText,10 * (self.currentPage),10))
+                    .then((res:any) => {
+                      self.cards = res.body;
+                      this.scrollTop = this.offsetHeight / 2;
+                    });
+　　    }
+   });
+  }
+
+ 
+  scrollEvent(){
+    console.log("scroll event");
+  }
+  searchURL(queryText:any,position:any,length:any) {
+    return `http://47.100.238.22:8080/search?query=${queryText}&startPosition=${position}&length=${length}`;
   }
 }
 </script>
@@ -60,9 +93,15 @@ export default class About extends Vue {
     @include flex_justify_content(center);
     @include flex_aligin_items(center);
   }
+  .content-wrap{
+    overflow-y: scroll;
+    height: 560px;
+    margin-top: 20px;
+  }
   .time-filter{
     text-align: left;
-    margin-right: 50px;
+    margin-top: 60px;
+    margin-right: 200px;
   }
   .time-filter>div{
     font-size: 13px;

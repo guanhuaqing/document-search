@@ -21,6 +21,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Sidebar from '@/components/sidebar.vue';
 import Search from '@/components/search.vue';
 import SearchHint from '@/components/search-hint.vue';
+
 @Component({
   components: {
     Sidebar,
@@ -35,9 +36,8 @@ export default class Home extends Vue {
 
   }
   searchDoc(value:any){
-    console.log(value);
-    // this.$router.push({path:'/about',params:{searchValue: value}});
     this.$router.push({name:'about',params:{searchValue: value}});
+    //this.$router.push({name:'about',params:{searchValue: value},query:{searchValue:value}});
   }
   pageChange(page:any){
     this.sidebarFlag = false;
